@@ -6,37 +6,23 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nome
 
-    # A classe Produto vai ser a nossa tabela de itens
-    # do cardápio do banco de dados
 class Produto(models.Model):
 
-#Charfield é usado para textos curtos e é obrigatório 
-#max_length=150 impõe um limite de 150 caracteres 
-
+    # Charfield é usado para textos curtos e é obrigatório 
     nome = models.CharField(max_length=150)
 
-#Textfiekd é para textos longos ( como lista de peças ou combos)
-#blank=True e null = True avisam o banco de dados que é 
-#opcional preencher o dado 
-
+    # TextField é para textos longos (como lista de peças ou combos)
     descricao = models.TextField(blank=True, null=True)
 
-#decimalField é o formato perfeito para trabalhar com dinheiro
-#max_digits= diz que o valor pode ter até 8 numeros no total.
-#decimal_places =2 garante que os últimos dois números sejam cents.
-
+    # DecimalField é o formato perfeito para trabalhar com dinheiro
     preco = models.DecimalField(max_digits=8, decimal_places=2)
 
-#Foreignkey ( tabela estrangeira ) é o que conecta tabelas diferentes 
-# django interpreta : "Esse produto pertence à classe Categoria lá de cima".
-#CASCADE: se o dono apagar a ctegoria "bebidas", todos os refrigerantes 
-#são apagados juntos 
-
+    # ForeignKey (tabela estrangeira) é o que conecta tabelas diferentes 
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
-# A função __str__ muda o nome de exibição no painel administrativo do django 
-#sem ela o django chamaria o item de "Produto object 1"
-#com ela exibe o nome real (ex: combinado hot, "temaki cru ")
+    # imagefield gerencia o upload de fotos (alinhado corretamente!)
+    imagem = models.ImageField(upload_to='produtos/', blank=True, null=True)
 
-    def __str__ (self ):
-        return self.nome   
+    # A função __str__ muda o nome de exibição no painel administrativo
+    def __str__(self):
+        return self.nome

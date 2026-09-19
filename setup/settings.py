@@ -126,3 +126,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# Configuração de Arquivos de Mídia (Upload de Imagens dos Produtos)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
