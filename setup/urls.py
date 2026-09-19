@@ -1,22 +1,16 @@
-"""
-URL configuration for setup project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
+from django.contrib import admin 
 from django.urls import path
 
+#1. imoportamos o arquivo de views do nosso aplicativo cardapio
+from cardapio import views
+
 urlpatterns = [
+    #essa é a rota do painel administrtivo 
     path('admin/', admin.site.urls),
+    
+#2. criamos a rota da pag inicial do restaurante 
+# as aspas vazias significam a pasta raiz do site 
+# Quando o cliente acessar a raiz, o Django aciona a sua views.vitrine_digital
+path('',views.vitrine_digital, name='vitrine'),
 ]
+

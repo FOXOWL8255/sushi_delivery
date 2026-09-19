@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cardápio Digital - Sushi</title>
+</head>
+<body>
+    <h1>Nosso Cardápio Digital</h1>
+    <hr>
+
+    <!-- Aqui começa a mágica do Django! -->
+    <!-- O for vai passar por todos os produtos que a sua View mandou -->
+    <ul>
+        {% for produto in produtos %}
+            
+            <!-- Usamos as chaves duplas para imprimir o dado na tela -->
+            <li>
+                <strong>{{ produto.nome }}</strong> - R$ {{ produto.preco }}
+            </li>
+            
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
