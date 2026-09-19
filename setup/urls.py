@@ -1,17 +1,16 @@
 from django.contrib import admin 
-from django.urls import path
-from cardapio import views
+from django.urls import path, include
 
 # Imports essenciais para o gerenciamento de arquivos de mídia
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    # essa é a rota do painel administrativo 
+    # Rota do painel administrativo 
     path('admin/', admin.site.urls),
     
-    # 2. criamos a rota da pag inicial do restaurante 
-    path('', views.vitrine_digital, name='vitrine'),
+    # Diz ao Django para olhar as rotas de dentro do aplicativo 'cardapio'
+    path('', include('cardapio.urls')),
 ]
 
 # Adiciona a rota de arquivos de mídia quando estamos em modo debug 

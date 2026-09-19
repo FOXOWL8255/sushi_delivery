@@ -20,13 +20,16 @@
                     
                     <!-- Verifica se o produto tem uma foto cadastrada -->
                     {% if produto.imagem %}
-                        <!-- card-img-top: classe do Bootstrap para ajustar a imagem no topo do card -->
-                        <!-- style="height: 200px; object-fit: cover;": Deixa todas as fotos com o mesmo tamanho padrão sem distorcer -->
                         <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 200px; object-fit: cover;">
                     {% endif %}
 
                     <div class="card-body text-center">
-                        <h5 class="card-title fw-bold">{{ produto.nome }}</h5>
+                        <!-- O TÍTULO AGORA É UM LINK CLICÁVEL -->
+                        <h5 class="card-title fw-bold">
+                            <a href="{% url 'detalhe_produto' produto.id %}" class="text-decoration-none text-dark">
+                                {{ produto.nome }}
+                            </a>
+                        </h5>
                         
                         {% if produto.descricao %}
                             <p class="card-text text-muted">{{ produto.descricao }}</p>
