@@ -26,3 +26,15 @@ class Produto(models.Model):
     # A função __str__ muda o nome de exibição no painel administrativo
     def __str__(self):
         return self.nome
+
+# Essa nova tabela vai guardar fotos extras dos produtos 
+class ImagemProduto(models.Model):
+    # Conecta essa imagem a um produto especifico. 
+    # O related_name='imagens' é o que vai nos permitir criar o carrossel depois!
+    produto = models.ForeignKey(Produto, related_name='imagens', on_delete=models.CASCADE)
+    
+    # Campo que faz o upload da foto extra
+    imagem = models.ImageField(upload_to='produtos/galeria/')
+
+    def __str__(self):
+        return f"Foto extra de {self.produto.nome}"
