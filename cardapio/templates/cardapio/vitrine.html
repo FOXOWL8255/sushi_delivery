@@ -13,6 +13,25 @@
     <div class="container py-5">
         <h1 class="text-center mb-4">Nosso Cardápio Digital</h1>
         
+        <!-- Barra de Filtros por Categoria -->
+        <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
+            
+            <!-- Botão padrão para mostrar "Todos" -->
+            <a href="{% url 'vitrine' %}" class="btn {% if not categoria_ativa %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                Todos
+            </a>
+
+            <!-- Loop que gera um botão dinâmico para cada categoria existente -->
+            {% for categoria in categorias %}
+                <a href="{% url 'vitrine' %}?categoria={{ categoria.id }}" 
+                   class="btn {% if categoria_ativa == categoria.id|stringformat:'s' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                    {{ categoria.nome }}
+                </a>
+            {% endfor %}
+            
+        </div>
+        
+        <!-- Lista de Produtos -->
         <div class="row">
             {% for produto in produtos %}
             <div class="col-md-4 mb-4">

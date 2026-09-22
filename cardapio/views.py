@@ -1,33 +1,28 @@
 from django.shortcuts import render, get_object_or_404
 
-# É necessário importar as tabelas para a view acessar o banco de dados 
-from .models import Produto
+# Importamos a Categoria junto com o Produto
+from .models import Produto, Categoria 
 
-# Essa é a função que vai carregar a página do cardápio p/ Cliente
 def vitrine_digital(request):
+    # Pega todas as categorias no banco para criar os botões
+    categorias = Categoria.objects.all()
     
-    # comando que pesca todos os produtos do banco de dados 
-    produtos_do_banco = Produto.objects.all()
-
-    # transformamos os produtos em um dicionário para enviar ao HTML 
-    context = {
-        'produtos': produtos_do_banco
+    # Verifica se tem algum filtro na URL (ex: ?categoria=1)
+    categoria_id = request.GET.get('categoria')
+    
+    if categoria_id:
+        produtos = Produto.objects.filter(categoria_id=categoria_id)
+    else:
+        produtos = Produto.objects.all()
+        
+    # O segredo está aqui: enviamos as categorias para o HTML!
+    contexto = {
+        'produtos': produtos,
+        'categorias': categorias,
+        'categoria_ativa': categoria_id
     }
+    return render(request, 'cardapio/vitrine.html', contexto)
 
-    # renderizar a vitrine.html entregando a ela o pacote de dados 
-    return render(request, 'cardapio/vitrine.html', context)
-
-
-# Essa é a função que vai carregar a página de detalhes de um produto específico
 def detalhe_produto(request, produto_id):
-    
-    # Busca o produto pelo ID no banco ou retorna uma página 404 se não existir
     produto = get_object_or_404(Produto, id=produto_id)
-
-    # Empacota o produto individual em um dicionário para enviar ao HTML
-    context = {
-        'produto': produto
-    }
-
-    # Renderiza a página de detalhes entregando o produto selecionado
-    return render(request, 'cardapio/detalhe_produto.html', context)
+    return render(request, 'cardapio/detalhe_produto.html', {'produto': produto})
