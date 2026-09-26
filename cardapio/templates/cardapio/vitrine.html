@@ -56,7 +56,8 @@
                         
                         <h4 class="text-success mt-3">R$ {{ produto.preco }}</h4>
                         
-                        <button class="btn btn-danger w-100 mt-2">Adicionar</button>
+                        <!-- BOTÃO ATUALIZADO PARA LINK DINÂMICO -->
+                        <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="btn btn-danger w-100 mt-2">Adicionar</a>
                     </div>
                 </div>
             </div>

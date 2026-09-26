@@ -15,7 +15,18 @@ def vitrine_digital(request):
         produtos = Produto.objects.filter(categoria_id=categoria_id)
     else:
         produtos = Produto.objects.all()
+
+        #ler o carrinho e adicionar visulamente a quantidade
+    carrinho = request.session.get('carrinho', {})
+    total_itens = sum(item['quantidade'] for item in carrinho.values())
         
+    contexto = {
+        'produtos': produtos,
+        'categorias': categorias,
+        'categoria_ativa': categoria_id,
+        'total_itens': total_itens # Enviamos o total para a tela
+    }
+    return render(request, 'cardapio/vitrine.html', contexto)
     # O segredo está aqui: enviamos as categorias para o HTML!
     contexto = {
         'produtos': produtos,
@@ -28,7 +39,6 @@ def detalhe_produto(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
     return render(request, 'cardapio/detalhe_produto.html', {'produto': produto})
 
-# --- AQUI COMEÇA O NOSSO NOVO CÓDIGO ---
 
 def adicionar_ao_carrinho(request, produto_id):
     # Busca o sushi específico no qual o cliente clicou
