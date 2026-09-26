@@ -34,10 +34,11 @@
                 </div>
             </div>
 
-            <!-- Botões de ação -->
+            <!-- Botões de ação com a opção de Esvaziar -->
             <div class="d-grid gap-2">
                 <button class="btn btn-success btn-lg fw-bold">Finalizar no WhatsApp</button>
                 <a href="{% url 'vitrine' %}" class="btn btn-outline-secondary">Adicionar mais itens</a>
+                <a href="{% url 'limpar_carrinho' %}" class="btn btn-outline-danger mt-2">Esvaziar Carrinho</a>
             </div>
             
         {% else %}

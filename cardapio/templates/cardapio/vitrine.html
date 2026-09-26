@@ -4,31 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cardápio Digital - Sushi</title>
-    
-    <!-- Importação do Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     
     <div class="container py-5">
+        
+        <!-- NOVO: Botão do Carrinho no topo direito -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'ver_carrinho' %}" class="btn btn-warning fw-bold shadow-sm">
+                🛒 Ver Carrinho ({{ total_itens|default:"0" }})
+            </a>
+        </div>
+
         <h1 class="text-center mb-4">Nosso Cardápio Digital</h1>
         
         <!-- Barra de Filtros por Categoria -->
         <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
-            
-            <!-- Botão padrão para mostrar "Todos" -->
             <a href="{% url 'vitrine' %}" class="btn {% if not categoria_ativa %}btn-danger{% else %}btn-outline-danger{% endif %}">
                 Todos
             </a>
-
-            <!-- Loop que gera um botão dinâmico para cada categoria existente -->
             {% for categoria in categorias %}
                 <a href="{% url 'vitrine' %}?categoria={{ categoria.id }}" 
                    class="btn {% if categoria_ativa == categoria.id|stringformat:'s' %}btn-danger{% else %}btn-outline-danger{% endif %}">
                     {{ categoria.nome }}
                 </a>
             {% endfor %}
-            
         </div>
         
         <!-- Lista de Produtos -->
@@ -36,27 +37,19 @@
             {% for produto in produtos %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
-                    
-                    <!-- Verifica se o produto tem uma foto cadastrada -->
                     {% if produto.imagem %}
                         <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 200px; object-fit: cover;">
                     {% endif %}
-
                     <div class="card-body text-center">
-                        <!-- O TÍTULO AGORA É UM LINK CLICÁVEL -->
                         <h5 class="card-title fw-bold">
                             <a href="{% url 'detalhe_produto' produto.id %}" class="text-decoration-none text-dark">
                                 {{ produto.nome }}
                             </a>
                         </h5>
-                        
                         {% if produto.descricao %}
                             <p class="card-text text-muted">{{ produto.descricao }}</p>
                         {% endif %}
-                        
                         <h4 class="text-success mt-3">R$ {{ produto.preco }}</h4>
-                        
-                        <!-- BOTÃO ATUALIZADO PARA LINK DINÂMICO -->
                         <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="btn btn-danger w-100 mt-2">Adicionar</a>
                     </div>
                 </div>

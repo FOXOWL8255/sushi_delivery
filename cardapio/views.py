@@ -53,3 +53,12 @@ def ver_carrinho(request):
         'total_pedido': total_pedido
     }
     return render(request, 'cardapio/carrinho.html', contexto)
+
+
+def limpar_carrinho(request):
+    # Se o "bloco de notas" do carrinho existir na sessão, nós apagamo-lo
+    if 'carrinho' in request.session:
+        del request.session['carrinho']
+    
+    # Após limpar, redireciona o cliente de volta para a vitrine
+    return redirect('vitrine')
