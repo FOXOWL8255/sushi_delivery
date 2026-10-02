@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Produto, Categoria 
+import urllib.parse # <-- IMPORTANTE: Necessário para formatar o texto para o WhatsApp
 
 def vitrine_digital(request):
     categorias = Categoria.objects.all()
@@ -44,21 +45,31 @@ def adicionar_ao_carrinho(request, produto_id):
 
 def ver_carrinho(request):
     carrinho = request.session.get('carrinho', {})
-    
-    # Calcula o valor total do pedido
     total_pedido = sum(float(item['preco']) * item['quantidade'] for item in carrinho.values())
+    
+    # --- NOVO: MONTAGEM DA MENSAGEM DO WHATSAPP ---
+    mensagem = "*Novo Pedido - Cardápio Digital* 🍣\n\n"
+    for id_produto, item in carrinho.items():
+        mensagem += f"- {item['quantidade']}x {item['nome']} (R$ {item['preco']})\n"
+    mensagem += f"\n*Total do Pedido: R$ {total_pedido:.2f}*"
+    
+    # Substitua o número abaixo pelo número do WhatsApp do seu restaurante (Código do país + DDD + Número)
+    # Exemplo para o Brasil (DDD 11): 5511999999999
+    numero_whatsapp = "5561994446204" 
+    
+    # Converte o texto para formato de link seguro da internet
+    mensagem_codificada = urllib.parse.quote(mensagem)
+    whatsapp_url = f"https://wa.me/{numero_whatsapp}?text={mensagem_codificada}"
+    # ----------------------------------------------
     
     contexto = {
         'carrinho': carrinho,
-        'total_pedido': total_pedido
+        'total_pedido': total_pedido,
+        'whatsapp_url': whatsapp_url # Enviamos o link gerado para o HTML
     }
     return render(request, 'cardapio/carrinho.html', contexto)
 
-
 def limpar_carrinho(request):
-    # Se o "bloco de notas" do carrinho existir na sessão, nós apagamo-lo
     if 'carrinho' in request.session:
         del request.session['carrinho']
-    
-    # Após limpar, redireciona o cliente de volta para a vitrine
     return redirect('vitrine')
